@@ -18,10 +18,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsAuthenticated(true);
     }
   }, []);
-
+  
   const login = (email: string, password: string) => {
     // Static credentials for manager
-    if (email === 'manager.boc@gmail.com' && password === 'bocadmin123') {
+    if (email === 'thushara198519@gmail.com' && password === 'thushara123') {
       setIsAuthenticated(true);
       localStorage.setItem('boc_manager_auth', 'true');
       return true;
