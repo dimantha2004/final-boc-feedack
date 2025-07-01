@@ -7,7 +7,6 @@ type Feedback = Database['public']['Tables']['feedbacks']['Row'];
 interface FeedbackSummaryProps {
   feedbacks: Feedback[];
 }
-
 const FeedbackSummary: React.FC<FeedbackSummaryProps> = ({ feedbacks }) => {
   const { t } = useLanguage();
 
