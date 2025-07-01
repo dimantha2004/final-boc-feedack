@@ -32,27 +32,27 @@ export default function ManagerDashboard({ onBackToFeedback }: { onBackToFeedbac
   const [feedbackTrends, setFeedbackTrends] = useState({ positive: 0, negative: 0, neutral: 0 });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchFeedbacks();
-      
-      const subscription = supabase
-        .channel('feedbacks-channel')
-        .on(
-          'postgres_changes', 
-          { event: 'INSERT', schema: 'public', table: 'feedbacks' }, 
-          (payload) => {
-            setFeedbacks(prev => {
-              const updatedFeedbacks = [...prev, payload.new as Feedback];
-              calculateFeedbackTrends(updatedFeedbacks);
-              return updatedFeedbacks;
-            });
-          }
-        )
-        .subscribe();
+    fetchFeedbacks();
 
-      return () => subscription.unsubscribe();
-    }
-  }, [isAuthenticated]);
+    const subscription = supabase
+      .channel('feedbacks-channel')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'feedbacks' },
+        (payload) => {
+          setFeedbacks(prev => {
+            const updatedFeedbacks = [...prev, payload.new as Feedback];
+            calculateFeedbackTrends(updatedFeedbacks);
+            return updatedFeedbacks;
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (feedbacks.length > 0) {
