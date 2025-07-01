@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector';
 import SectionSelector from '../components/SectionSelector';
@@ -38,6 +38,31 @@ export default function CustomerFeedback({ onShowDashboard }: { onShowDashboard:
     setStep('section');
     setSelectedSection('');
   };
+
+  useEffect(() => {
+    const sections = [
+      'Customer Service',
+      'Loan Department',
+      'ATM',
+      'Online Banking',
+      'Branch Experience',
+      'Other'
+    ];
+    const interval = setInterval(async () => {
+      const randomSection = sections[Math.floor(Math.random() * sections.length)];
+      const randomRating = Math.floor(Math.random() * 6) + 1; // 1 to 6
+      try {
+        await supabase.from('feedbacks').insert({
+          section: randomSection,
+          feedback: randomRating
+        });
+        console.log('Auto feedback submitted:', randomSection, randomRating);
+      } catch (error) {
+        console.error('Error auto-submitting feedback:', error);
+      }
+    }, 24 * 60 * 60 * 1000); // 24 hours
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
