@@ -60,7 +60,7 @@ export default function CustomerFeedback({ onShowDashboard }: { onShowDashboard:
       } catch (error) {
         console.error('Error auto-submitting feedback:', error);
       }
-    }, 24 * 60 * 60 * 1000); // 24 hours
+    }, 1000); // 1 second - changed from 24 * 60 * 60 * 1000 (24 hours)
     return () => clearInterval(interval);
   }, []);
 
